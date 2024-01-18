@@ -77,8 +77,8 @@ ap≡ f app = ap id app
 transport' : {X : 𝓤 ̇} (A : X → 𝓥 ̇) {x y : X} → x ≡ y → A x → A y
 transport' A = transport-app A
 
-Hom : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } → (X → Y) → Y → 𝓤 ⊔ 𝓥 ̇
-Hom f y = ∀ x → f ◂ x ⟶ y
+Hom : (X : 𝓤 ̇ ) (Y : X → 𝓥 ̇ ) → 𝓤 ⊔ 𝓥 ̇
+Hom X Y = (f : Π Y) → ∀ y → Σ x ꞉ f ◂ x ⟶ y
 
 app-to-id : {X : 𝓤 ̇} {x y : X} → id ◂ x ⟶ y → x ≡ y
 app-to-id = id
