@@ -11,22 +11,6 @@ open import Properties.Associative
 open import Properties.Neutral
 open import Properties.Set
 
-
-
-
--- There is only one inhabitant of the Path type, refl. If anything is
--- definitionally equal to refl, the only possibility is that it is refl.
--- refl-is-set : (X : 𝓤 ̇) → ((x : X) (p : x ＝ x) → p ＝ refl) → is-set X
--- refl-is-set X r {x} p q = transport (λ - → p ＝ -) ({!!} ⁻¹) {!r ? ?!}
---  where
---   ht : target p ＝ target q
---   ht = p ⁻¹ ∙ q
-
---   h₀ : (p ⁻¹ ∙ q) ＝ (transport (λ - → {!!} ＝ -) {!!} {!!})
---   h₀ = refl
---   h₁ : q ＝ q ∙ (p ⁻¹ ∙ q)
---   h₁ = {!!}
-
 \end{code}
 
 A precategory 𝓒 consists of a type of objects Ob(𝒞).
