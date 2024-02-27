@@ -1,4 +1,5 @@
-Definition of Categories
+Definition of categories a more traditional way. Currently exploring Cat.Type
+as an alternative way of defining categories.
 
 \begin{code}
 
@@ -12,7 +13,6 @@ open import Properties.Neutral
 open import Properties.Set
 
 \end{code}
-
 
 \begin{code}
 record category-structure (ob : 𝓤 ̇) (𝓥 : Universe) : 𝓤 ⊔ 𝓥 ⁺ ̇ where
