@@ -2,7 +2,7 @@
 
 {-# OPTIONS --safe --without-K #-}
 
-module Data.Natural where
+module Prim.Naturals where
 
 open import Prim.Type
 

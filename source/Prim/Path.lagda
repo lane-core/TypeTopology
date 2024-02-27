@@ -13,7 +13,7 @@ The sigma type, the Pi type, as well as the identity type.
 module Prim.Path where
 
 open import Prim.Type
-open import Prim.Morphism
+open import Prim.Function
 open import Prim.Pi
 open import Prim.Sigma
 
@@ -29,9 +29,6 @@ Path f x y = f ꞉ x ⟶ y
 
 Fiber : {X : 𝓤 ̇} {A : X → 𝓥 ̇} (f : Π A) {x : X} (y : A x) → 𝓤 ⊔ 𝓥 ̇
 Fiber f {x} y = Path f x y
-
-_◂_ : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} (f : Π Y) (x : X) → f ꞉ x ⟶ f x
-_◂_ = λ _ _ → path
 
 Jbased : {X : 𝓤 ̇} (x : X) {Y : X → 𝓥 ̇} {f : ∀ x → Y x}
   → (A : ∀ y → f ꞉ x ⟶ y → 𝓦 ̇) → A (f x) path
@@ -61,11 +58,9 @@ erefl = λ _ → refl
 _∎ : {X : 𝓤 ̇} (x : X) → x ＝ x
 _∎ = λ _ → refl
 
-
-
-π : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} {f : (x : X) → Y x} {x : X} {y : Y x}
+route : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} {f : (x : X) → Y x} {x : X} {y : Y x}
        → f ꞉ x ⟶ y → Π Y
-π {𝓤} {𝓥} {X} {Y} {f} p = f
+route {𝓤} {𝓥} {X} {Y} {f} p = f
 
 source : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} {f : (x : X) → Y x} {x : X} {y : Y x}
        → f ꞉ x ⟶ y → X
@@ -89,6 +84,10 @@ transportf : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} (A : {x : X} → Y x → 𝓦 ̇)
             {f : Π Y} {x : X} {y : Y x} → Fiber f y → A (f x) → A y
 transportf A path = id
 
+-- syntax for transportf
+
+syntax transportf (λ x → b) p a = x ↝ p ꞉ a ⇒ b
+
 transport : {X : 𝓤 ̇} (A : X → 𝓥 ̇) {x y : X} → x ＝ y → A x → A y
 transport A = transportf A
 
@@ -111,20 +110,20 @@ instance
 
 {-# DISPLAY sym p = p ⁻¹ #-}
 
-trans : {X : 𝓤 ̇} {x y z : X} → x ＝ y → y ＝ z → x ＝ z
-trans p q = transport (λ - → - ＝ target q) (sym p) q
+id-trans : {X : 𝓤 ̇} {x y z : X} → x ＝ y → y ＝ z → x ＝ z
+id-trans p q = transport (λ - → - ＝ target q) (sym p) q
 
 open Op-Bullet {{...}} public renaming (_∙_ to infixr 2 _∙_)
 open Op-Ring {{...}} public renaming (_∘_ to infixr 5 _∘_)
 
 instance
  ⅈ₀ : {X : 𝓤 ̇} {x y z : X} → Op-Bullet (x ＝ y) (y ＝ z) (x ＝ z)
- _∙_ ⦃ ⅈ₀ ⦄ = trans
+ _∙_ ⦃ ⅈ₀ ⦄ = id-trans
 
  ⅈ₁ : {X : 𝓤 ̇} {x y z : X} → Op-Ring (y ＝ z) (x ＝ y) (λ _ _ → x ＝ z)
- _∘_ ⦃ ⅈ₁ ⦄ q p = trans p q
+ _∘_ ⦃ ⅈ₁ ⦄ q p = id-trans p q
 
-{-# DISPLAY trans p q = p ∙ q #-}
+{-# DISPLAY id-trans p q = p ∙ q #-}
 
 refl-lc : {X : 𝓤 ̇} {x y : X} (p : x ＝ y) → refl ∙ p ＝ p
 refl-lc path = refl
@@ -142,8 +141,8 @@ Homotopy : {X : 𝓤 ̇} (A : X → 𝓥 ̇) → Π A → Π A → 𝓤 ⊔ 𝓥
 Homotopy A = _∼_
 
 ∼trans : {X : 𝓤 ̇} {A : X → 𝓥 ̇} {f g h : Π A}
-       → f ∼ g → g ∼ h → f ∼ h
-∼trans p q x = transportf (λ a → Fiber (π (p x)) a) (q x) (p x)
+    → f ∼ g → g ∼ h → f ∼ h
+∼trans p q x = a ↝ q x ꞉ p x ⇒ Fiber (route (p x)) a
 
 instance
  ⅈ₃ : {X : 𝓤 ̇} {A : X → 𝓥 ̇} {f g h : Π A}
@@ -173,38 +172,38 @@ Fibtofun A = transportf id
 Idtofun : {X Y : 𝓤 ̇} → X ＝ Y → X → Y
 Idtofun = Fibtofun id
 
-record Graph {𝓤 𝓥} (E : 𝓤 ̇) (V : 𝓥 ̇) : 𝓤 ⊔ 𝓥 ̇ where
- no-eta-equality
- field
-  src : E → V
-  tgt : E → V
+-- record Graph {𝓤 𝓥} (E : 𝓤 ̇) (V : 𝓥 ̇) : 𝓤 ⊔ 𝓥 ̇ where
+--  no-eta-equality
+--  field
+--   src : E → V
+--   tgt : E → V
 
- record Edge (s t : V) : 𝓤 ⊔ 𝓥 ̇ where
-  field
-   edge : E
-   has-src : src edge ＝ s
-   has-tgt : tgt edge ＝ t
+--  record Edge (s t : V) : 𝓤 ⊔ 𝓥 ̇ where
+--   field
+--    edge : E
+--    has-src : src edge ＝ s
+--    has-tgt : tgt edge ＝ t
 
- open Edge {{...}} public
+--  open Edge {{...}} public
 
- data Path-between (s t : V) : 𝓤 ⊔ 𝓥 ̇ where
-  nil : Path-between s t
-  cons : ∀ {v} → Edge s v → Path-between v t → Path-between s t
+--  data Path-between (s t : V) : 𝓤 ⊔ 𝓥 ̇ where
+--   nil : Path-between s t
+--   cons : ∀ {v} → Edge s v → Path-between v t → Path-between s t
 
-open Graph {{...}} public
-open Edge {{...}} public
+-- open Graph {{...}} public
+-- open Edge {{...}} public
 
-instance
- path-connects-a-graph : {V : 𝓤 ̇} {f g : V → V} {s t : V}
-                       → Graph (f ꞉ s ⟶ g t) V
- src {{path-connects-a-graph}} = source
- tgt {{path-connects-a-graph}} = target
+-- instance
+--  path-connects-a-graph : {V : 𝓤 ̇} {f g : V → V} {s t : V}
+--                        → Graph (f ꞉ s ⟶ g t) V
+--  src {{path-connects-a-graph}} = source
+--  tgt {{path-connects-a-graph}} = target
 
-path-is-an-edge : {V : 𝓤 ̇} {f g : V → V} {s t : V}
-  → f ꞉ s ⟶ g t → Edge {{path-connects-a-graph {𝓤} {V} {f} {g}}} s (g t)
-edge {{path-is-an-edge p}} = p
-has-src {{path-is-an-edge p}} = refl
-has-tgt {{path-is-an-edge p}} = refl
+-- path-is-an-edge : {V : 𝓤 ̇} {f g : V → V} {s t : V}
+--   → f ꞉ s ⟶ g t → Edge {{path-connects-a-graph {𝓤} {V} {f} {g}}} s (g t)
+-- edge {{path-is-an-edge p}} = p
+-- has-src {{path-is-an-edge p}} = refl
+-- has-tgt {{path-is-an-edge p}} = refl
 
 \end{code}
 
@@ -257,8 +256,8 @@ Proof that the classic identity type is equivalent to this one
 
 \begin{code}
 
-open import Data.Unit
-open import Data.Plus
+open import Prim.Unit
+open import Prim.Plus
 
 private
  module _ where
@@ -288,7 +287,7 @@ private
 Infixities
 
 \begin{code}
-infixr 2 trans
+infixr 2 id-trans
 infixr 3 sym
 infixl 0 _＝_
 infixl 0 _꞉_⟶_

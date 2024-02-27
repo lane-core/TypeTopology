@@ -4,15 +4,16 @@ Plus
 
 {-# OPTIONS --safe --without-K #-}
 
-module Data.Plus where
+module Prim.Plus where
 
 open import Prim.Type
+open import Operators.Plus public
 
 data _∔_ {𝓤 𝓥 : Universe} (X : 𝓤 ̇) (Y : 𝓥 ̇ ) : 𝓤 ⊔ 𝓥 ̇ where
  inl : X → X ∔ Y
  inr : Y → X ∔ Y
 
-open import Operators.Plus public
+{-# FOREIGN GHC type AgdaEither a b = _∔_ #-}
 
 instance
  Sum-Plus : `+` (𝓤 ̇) (𝓥 ̇) (𝓤 ⊔ 𝓥 ̇)

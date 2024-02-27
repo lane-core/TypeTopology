@@ -6,93 +6,63 @@ Definition of Categories
 
 module Base.Category where
 
-open import Prim.Prelude hiding (Hom)
+open import Prim.Prelude
 open import Properties.Associative
 open import Properties.Neutral
 open import Properties.Set
 
 \end{code}
 
-A precategory 𝓒 consists of a type of objects Ob(𝒞).
 
 \begin{code}
-
-record Precat (Ob : 𝓒 ̇) (𝓤 : Universe) : 𝓒 ⊔ 𝓤 ⁺ ̇ where
+record category-structure (ob : 𝓤 ̇) (𝓥 : Universe) : 𝓤 ⊔ 𝓥 ⁺ ̇ where
+ constructor arr_⨾idn_⨾seq_
  field
-  _⟶_ : Ob → Ob → 𝓤 ̇
-  Hom-set : (x y : Ob) → is-set (x ⟶ y)
-  _·_ : {x y z : Ob} → y ⟶ z → x ⟶ y → x ⟶ z
-  unit : {x : Ob} → x ⟶ x
-  unitr : {x y : Ob} (f : x ⟶ y) → f · unit ＝ f
-  unitl : {x y : Ob} (f : x ⟶ y) → unit · f ＝ f
-  Hom-assoc : {w x y z : Ob} (f : y ⟶ z) (g : x ⟶ y) (h : w ⟶ x)
-        → f · (g · h) ＝ (f · g) · h
+  arr : ob → ob → 𝓥 ̇
+  unit : (A : ob) → arr A A
+  trans : {A B C : ob} → arr A B → arr B C → arr A C
 
- infixr 8 _⟶_
- infixr 40 _·_
+open category-structure
 
- hom : Ob → Ob → 𝓤 ̇
- hom = _⟶_
+record Precategory : (𝓤 ⊔ 𝓥) ⁺ ̇ where
+ no-eta-equality
+ field
+  ob : 𝓤 ̇
+  str : category-structure ob 𝓥
+  ax : 𝓥 ̇
 
- hcomp : {x y z : Ob} → y ⟶ z → x ⟶ y → x ⟶ z
- hcomp = _·_
+ hom : ob → ob → 𝓥 ̇
+ hom = arr str
 
- hassoc : {w x y z : Ob} (f : y ⟶ z) (g : x ⟶ y) (h : w ⟶ x)
-        → f · (g · h) ＝ (f · g) · h
- hassoc = Hom-assoc
+ seq : {A B C : ob} → hom A B → hom B C → hom A C
+ seq = atrans str
 
- hsrc : {x y : Ob} → x ⟶ y → Ob
- hsrc {x} {y} h = x
+ cmp : {A B C : ob} → hom B C → hom A B → hom A C
+ cmp g f = seq f g
 
- htgt : {x y : Ob} → x ⟶ y → Ob
- htgt {_} {y} h = y
+ idn : (A : ob) → hom A A
+ idn A = unit str
 
- _ᵒᵖ : Precat Ob 𝓤  → Precat Ob 𝓤
- _⟶_ (C ᵒᵖ) x y = hom y x
- Hom-set (C ᵒᵖ) x y = Hom-set y x
- _·_ (C ᵒᵖ) g f = hcomp f g
- unit (C ᵒᵖ) = unit
- unitr (C ᵒᵖ) = unitl
- unitl (C ᵒᵖ) = unitr
- Hom-assoc (C ᵒᵖ) f g h = {!!}
-   where
-    _•_ : {x y z  : Ob} → hom z y → hom y x → hom z x
-    _•_ g f = hcomp f g
+ field
+  hom-is-set : (A B : ob) → is-set (hom A B)
+  idn-L : (A B : ob) → is-set (hom A B)
+  idn-R : (A B : ob) (f : hom A B) → seq f (idn B) ＝ f
+  assoc : (H J K L : ob) (f : hom H J) (g : hom J K) (h : hom K L)
+        → seq f (seq g h) ＝ seq (seq f g) h
 
+-- induces a category on functions
+CatP : (ob : 𝓤 ̇) → category-structure ob 𝓤
+arr (CatP ob) = λ X Y → X → Y
+unit (CatP ob) = 𝑖𝑑
+atrans (CatP ob) = λ f g → comp g f
 
+-- induces a category on functions
+CatPathP : (ob : 𝓤 ̇) (Y : 𝓥 ̇) (f : ob → 𝓥 ̇) → category-structure ob 𝓥
+arr (CatPathP ob f) = λ a b → f a ＝ f b
+unit (CatPathP ob f) = λ _ → refl
+atrans (CatPathP ob f) = ?
 
-open Precat
-
-ob : {Ob : 𝓒 ̇} → Precat Ob 𝓤 → 𝓒 ̇
-ob {_} {_} {Ob} _ = Ob
-
-module _ {Ob : 𝓒 ̇} where
-
-
-
-
-
-\end{code}
-
-for each object A:Ob(𝒞) and B:Ob(𝒞), a set Hom(A,B) of morphisms
-
-\begin{code}
-
- -- private
- --  Hom-type : (a b : Ob) → 𝓒 ⁺ ̇
- --  Hom-type a b = Hom a b
-
-\end{code}
-
-for each object A:Ob(𝒞), B:Ob(𝒞), and C:Ob(𝒞), a binary function
-
-  (−)∘[A,B,C](−):Hom(B,C)×Hom(A,B) → Hom(A,C)
-
-\begin{code}
-
- -- private
- --  hom-comp : {A B C : Ob} → Hom B C → Hom A B → Hom A C
- --  hom-comp p q = trans q p
-
+-- ∼is-cat : Cat 𝓤 𝓤
+-- ∼is-cat
 
 \end{code}

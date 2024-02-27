@@ -7,17 +7,23 @@ Pi type
 module Prim.Pi where
 
 open import Prim.Type
-open import Prim.Morphism
+open import Prim.Function
 open import Operators.Ring public
 
-Π : {X : 𝓤 ̇} (Y : X → 𝓥 ̇ ) → 𝓤 ⊔ 𝓥 ̇
+Π : {X : 𝓤 ̇} (Y : X → 𝓥 ̇) → 𝓤 ⊔ 𝓥 ̇
 Π {𝓤} {𝓥} {X} Y = (x : X) → Y x
 
 -- We often write Π x ꞉ X , A x for Π A to make X explicit.
-Pi : (X : 𝓤 ̇ ) (Y : X → 𝓥 ̇ ) → 𝓤 ⊔ 𝓥 ̇
+Pi : (X : 𝓤 ̇) (Y : X → 𝓥 ̇) → 𝓤 ⊔ 𝓥 ̇
 Pi X Y = Π Y
 
 syntax Pi A (λ x → b) = Π x ꞉ A , b
+
+-- Implicit pi notation
+̣Pi : (X : 𝓤 ̇) (Y : X → 𝓥 ̇) → 𝓤 ⊔ 𝓥 ̇
+̣Pi X Y = {x : X} → Y x
+
+syntax ̣Pi A (λ x → b) = [Π x ꞉ A ], b
 
 presheaf-of : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} → Π Y → Psh X 𝓥
 presheaf-of {𝓤} {𝓥} {X} {Y} f = Y
@@ -33,7 +39,7 @@ presheaf-of {𝓤} {𝓥} {X} {Y} f = Y
 {-# INLINE 𝒮 #-}
 
 comp : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } {Z : Y → 𝓦 ̇ }
-    → (Π Z) → (f : X → Y) (x : X) → Z (f x)
+    → Π Z → (f : X → Y) (x : X) → Z (f x)
 comp g f = λ x → g (f x)
 
 {-# INLINE comp #-}

@@ -4,7 +4,7 @@ Unit type
 
 {-# OPTIONS --safe --without-K #-}
 
-module Data.Unit where
+module Prim.Unit where
 
 open import Prim.Type
 
