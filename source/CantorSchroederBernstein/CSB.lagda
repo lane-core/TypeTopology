@@ -41,11 +41,11 @@ assumption beyond MLTT is explicit in each claim).
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module CantorSchroederBernstein.CSB where
 
-open import CoNaturals.GenericConvergentSequence
+open import CoNaturals.Type
 open import MLTT.Plus-Properties
 open import MLTT.Spartan
 open import Naturals.Properties
@@ -56,7 +56,7 @@ open import UF.Base
 open import UF.DiscreteAndSeparated
 open import UF.Embeddings
 open import UF.Equiv
-open import UF.ExcludedMiddle
+open import UF.ClassicalLogic
 open import UF.FunExt
 open import UF.Lower-FunExt
 open import UF.PropTrunc
@@ -916,7 +916,7 @@ dominance from synthetic domain theory and topology.
 Rosolini-data : 𝓤 ̇ → 𝓤 ⁺ ̇
 Rosolini-data {𝓤} P = Σ A ꞉ (ℕ → 𝓤 ̇ ) , ((n : ℕ) → is-decidable (A n))
                                       × is-prop (Σ A)
-                                      × (P ⇔ Σ A)
+                                      × (P ↔ Σ A)
 
 \end{code}
 
@@ -975,7 +975,7 @@ and MP, is formulated and proved in pure (spartan) MLTT:
 dBKS⁺-and-MP-give-DNE : dBKS⁺ 𝓤 → MP 𝓤 → DNE 𝓤
 dBKS⁺-and-MP-give-DNE {𝓤} bks mp P i = γ (bks P i)
  where
-  γ : (Σ A ꞉ (ℕ → 𝓤 ̇ ) , ((n : ℕ) → is-decidable (A n)) × is-prop (Σ A) × (P ⇔ Σ A))
+  γ : (Σ A ꞉ (ℕ → 𝓤 ̇ ) , ((n : ℕ) → is-decidable (A n)) × is-prop (Σ A) × (P ↔ Σ A))
     → ¬¬ P → P
   γ (A , d , j , f , g) = δ
    where
@@ -1012,7 +1012,7 @@ blemma : (P : 𝓤 ̇ ) {X : 𝓥 ̇ }
        → X ≃ P + X
        → Σ A ꞉ (X → 𝓤 ⊔ 𝓥 ̇ ) , ((x : X) → is-decidable (A x))
                               × is-prop (Σ A)
-                              × (P ⇔ Σ A)
+                              × (P ↔ Σ A)
 blemma {𝓤} {𝓥 } P {X} j i (f , (s , η) , (r , ε)) = A , d , l , (φ , γ)
  where
   A : X → 𝓤 ⊔ 𝓥 ̇

@@ -8,7 +8,7 @@ Some constructions with iterative sets.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 open import UF.Univalence
@@ -21,8 +21,7 @@ module Iterative.Sets-Addendum
 open import Iterative.Multisets 𝓤
 open import Iterative.Multisets-Addendum ua 𝓤
 open import Iterative.Sets ua 𝓤
-open import Taboos.Decomposability ua
-open import UF.ExcludedMiddle
+open import UF.ClassicalLogic
 open import UF.FunExt
 open import UF.PropTrunc
 open import UF.Size
@@ -39,6 +38,8 @@ private
 
  fe' : FunExt
  fe' 𝓤 𝓥 = fe {𝓤} {𝓥}
+
+open import Taboos.Decomposability fe'
 
 𝟘ⱽ : 𝕍
 𝟘ⱽ = 𝟘ᴹ , 𝟘ᴹ-is-iset
@@ -61,7 +62,7 @@ open import UF.Subsingletons
 open import UF.SubtypeClassifier
 
 𝕍-separation : (A : 𝕍) (P : 𝕍 → Ω 𝓤)
-             → Σ A' ꞉ 𝕍 , ((B : 𝕍) → (B ∈ A') ⇔ (B ∈ A × P B holds))
+             → Σ A' ꞉ 𝕍 , ((B : 𝕍) → (B ∈ A') ↔ (B ∈ A × P B holds))
 𝕍-separation A@(ssup X φ , φ-emb , φ-iter) P = A' , Q
  where
   A' : 𝕍
@@ -79,15 +80,15 @@ open import UF.SubtypeClassifier
   Q← B ((x , refl) , p) =
    (x , transport (_holds ∘ P) (to-subtype-＝ being-iset-is-prop refl) p) , refl
 
-  Q : (B : 𝕍) → B ∈ A' ⇔ (B ∈ A × P B holds)
+  Q : (B : 𝕍) → B ∈ A' ↔ (B ∈ A × P B holds)
   Q B = Q→ B ,  Q← B
 
 subset : 𝕍 → (P : 𝕍 → Ω 𝓤) → 𝕍
 subset A P = pr₁ (𝕍-separation A P)
 
-subset-⇔ : (A : 𝕍) (P : 𝕍 → Ω 𝓤)
-         → (B : 𝕍) → (B ∈ subset A P) ⇔ (B ∈ A × P B holds)
-subset-⇔ A P = pr₂ (𝕍-separation A P)
+subset-↔ : (A : 𝕍) (P : 𝕍 → Ω 𝓤)
+         → (B : 𝕍) → (B ∈ subset A P) ↔ (B ∈ A × P B holds)
+subset-↔ A P = pr₂ (𝕍-separation A P)
 
 \end{code}
 
@@ -121,8 +122,8 @@ small copy.
   R : 𝕍
   R = subset A P
 
-  g : (B : 𝕍) → (B ∈ R) ⇔ (B ∈ A × ¬ (B ∈⁻ B))
-  g = subset-⇔ A P
+  g : (B : 𝕍) → (B ∈ R) ↔ (B ∈ A × ¬ (B ∈⁻ B))
+  g = subset-↔ A P
 
   h : (R ∈ R) ≃ (R ∈⁻ R)
   h = ∈⁻≃∈ R R
@@ -164,6 +165,7 @@ excluded middle holds.
  decomposition-of-𝕍-gives-WEM : decomposition 𝕍 → WEM 𝓤
  decomposition-of-𝕍-gives-WEM =
   decomposition-of-ainjective-type-gives-WEM
+   (univalence-gives-propext (ua 𝓤))
    𝕍
    𝕍-is-ainjective
 

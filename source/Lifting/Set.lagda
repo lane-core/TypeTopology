@@ -6,7 +6,7 @@ propositions and two instances of function extensionality.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 
@@ -14,7 +14,7 @@ module Lifting.Set
   (𝓣 : Universe) -- fix a universe for the propositions
   where
 
-open import Lifting.Lifting 𝓣
+open import Lifting.Construction 𝓣
 open import UF.Base
 open import UF.FunExt
 open import UF.Retracts

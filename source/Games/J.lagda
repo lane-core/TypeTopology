@@ -2,7 +2,7 @@ Martin Escardo, Paulo Oliva, 2023
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan hiding (J)
 
@@ -35,7 +35,7 @@ open import Games.Monad
  extᴶᵀ : {X Y : Type} → (X → JT Y) → JT X → JT Y
  extᴶᵀ f ε p = ext 𝓣 (λ x → f x p) (ε (λ x → ext 𝓣 p (f x p)))
 
- extᴶᵀ-η : {X : Set} → extᴶᵀ (ηᴶᵀ {X}) ∼ 𝑖𝑑 (JT X)
+ extᴶᵀ-η : {X : Type} → extᴶᵀ (ηᴶᵀ {X}) ∼ 𝑖𝑑 (JT X)
  extᴶᵀ-η ε = dfunext fe λ p →
   ext 𝓣 (η 𝓣) (ε (λ x → ext 𝓣 p (η 𝓣 x))) ＝⟨ ext-η 𝓣 _ ⟩
   ε (λ x → ext 𝓣 p (η 𝓣 x))               ＝⟨ ap ε (dfunext fe (unit 𝓣 _)) ⟩

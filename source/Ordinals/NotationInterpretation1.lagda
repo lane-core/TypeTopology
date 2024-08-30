@@ -30,7 +30,7 @@ https://www.cs.bham.ac.uk/~mhe/TypeTopology/OrdinalNotationInterpretation.pdf
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
 open import MLTT.Spartan
 open import UF.FunExt
@@ -452,7 +452,7 @@ open import UF.Univalence
 open import UF.Equiv
 open import UF.Size
 
-open import CoNaturals.GenericConvergentSequence
+open import CoNaturals.Type
 open import TypeTopology.GenericConvergentSequenceCompactness
 open import TypeTopology.PropTychonoff
 

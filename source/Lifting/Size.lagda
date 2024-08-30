@@ -4,14 +4,14 @@ Size matters.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 
 module Lifting.Size (𝓣 : Universe) where
 
 open import Lifting.IdentityViaSIP
-open import Lifting.Lifting 𝓣
+open import Lifting.Construction 𝓣
 open import UF.Equiv
 open import UF.EquivalenceExamples
 open import UF.FunExt

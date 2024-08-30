@@ -4,13 +4,15 @@ A few basic lemmas for working with partial elements of a type.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 
 module Lifting.Miscelanea (𝓣 : Universe) where
 
-open import Lifting.Lifting 𝓣
+open import Lifting.Construction 𝓣
+open import UF.Equiv
+open import UF.EquivalenceExamples
 
 module _ {𝓤 : Universe}
          {X : 𝓤 ̇ }
@@ -25,5 +27,8 @@ module _ {𝓤 : Universe}
 
  ＝-to-is-defined : {l m : 𝓛 X} → l ＝ m → is-defined l → is-defined m
  ＝-to-is-defined e d = transport is-defined e d
+
+ ⊥-is-not-η : (x : X) → ⊥ ≠ η x
+ ⊥-is-not-η x e = ⌜ one-𝟘-only ⌝ (＝-to-is-defined (e ⁻¹) ⋆)
 
 \end{code}

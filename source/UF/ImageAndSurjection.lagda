@@ -2,7 +2,7 @@ Martin Escardo.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import UF.PropTrunc
 
@@ -60,6 +60,12 @@ restrictions-are-embeddings f = pr₁-is-embedding (λ y → ∥∥-is-prop)
 is-surjection : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } → (X → Y) → 𝓤 ⊔ 𝓥 ̇
 is-surjection f = ∀ y → y ∈image f
 
+being-surjection-is-prop : FunExt
+                         → {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y)
+                         → is-prop (is-surjection f)
+being-surjection-is-prop fe f = Π-is-prop (fe _ _) (λ y → being-in-the-image-is-prop y f)
+
+
 corestrictions-are-surjections : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y)
                                → is-surjection (corestriction f)
 corestrictions-are-surjections f (y , s) = ∥∥-functor g s
@@ -111,7 +117,7 @@ surjective-embeddings-are-equivs f e s =
 
 vv-equiv-iff-embedding-and-surjection : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y)
                                       → is-vv-equiv f
-                                      ⇔ is-embedding f × is-surjection f
+                                      ↔ is-embedding f × is-surjection f
 vv-equiv-iff-embedding-and-surjection f =
   (λ i → vv-equivs-are-embeddings f i , vv-equivs-are-surjections f i) ,
   (λ (e , s) → surjective-embeddings-are-vv-equivs f e s)

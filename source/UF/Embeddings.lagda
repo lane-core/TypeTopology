@@ -2,7 +2,7 @@ Martin Escardo
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module UF.Embeddings where
 
@@ -142,11 +142,11 @@ embeddings-with-sections-are-equivs : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y
 embeddings-with-sections-are-equivs f i h =
  vv-equivs-are-equivs f (embeddings-with-sections-are-vv-equivs f i h)
 
-Subtypes' : (𝓤 {𝓥} : Universe) → 𝓥 ̇ → 𝓤 ⁺ ⊔ 𝓥 ̇
-Subtypes' 𝓤 {𝓥} Y = Σ X ꞉ 𝓤 ̇ , X ↪ Y
+Subtype' : (𝓤 {𝓥} : Universe) → 𝓥 ̇ → 𝓤 ⁺ ⊔ 𝓥 ̇
+Subtype' 𝓤 {𝓥} Y = Σ X ꞉ 𝓤 ̇ , X ↪ Y
 
-Subtypes : 𝓤 ̇ → 𝓤 ⁺ ̇
-Subtypes {𝓤} Y = Subtypes' 𝓤 Y
+Subtype : 𝓤 ̇ → 𝓤 ⁺ ̇
+Subtype {𝓤} Y = Subtype' 𝓤 Y
 
 etofun : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } → (X ↪ Y) → (X → Y)
 etofun = pr₁
@@ -200,6 +200,21 @@ embedding-gives-embedding' {𝓤} {𝓥} {X} {Y} f ise = g
          (center (c x))
          (centrality (c x)))
 
+\end{code}
+
+Added 27 June 2024.
+It follows that if f is an equivalence, then so is ap f.
+It is added here, rather than in UF.EquivalenceExamples, to avoid cyclic module
+dependencies.
+
+\begin{code}
+
+ap-is-equiv : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y)
+            → is-equiv f
+            → {x x' : X} → is-equiv (ap f {x} {x'})
+ap-is-equiv f e {x} {x'} =
+ embedding-gives-embedding' f (equivs-are-embeddings f e) x x'
+
 embedding-criterion-converse' : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y)
                              → is-embedding f
                              → (x' x : X)
@@ -213,11 +228,11 @@ embedding-criterion-converse : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y)
                              → (f x' ＝ f x) ≃ (x' ＝ x)
 embedding-criterion-converse f e x' x = ≃-sym (embedding-criterion-converse' f e x' x)
 
-embedding'-embedding : {X : 𝓤 ̇ } {Y : 𝓥 ̇ }
-                       (f : X → Y)
-                     → is-embedding' f
-                     → is-embedding f
-embedding'-embedding {𝓤} {𝓥} {X} {Y} f ise = g
+embedding'-gives-embedding : {X : 𝓤 ̇ } {Y : 𝓥 ̇ }
+                             (f : X → Y)
+                           → is-embedding' f
+                           → is-embedding f
+embedding'-gives-embedding {𝓤} {𝓥} {X} {Y} f ise = g
  where
   e : (x : X) → is-central (Σ x' ꞉ X , f x ＝ f x') (x , refl)
   e x = universal-element-is-central
@@ -314,6 +329,13 @@ lc-maps-into-sets-are-embeddings {𝓤} {𝓥} {X} {Y} f f-lc iss y (x , p) (x' 
    γ : x , p ＝ x' , p'
    γ = to-Σ-Id (r , q)
 
+sections-into-sets-are-embeddings : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y)
+                                  → is-section f
+                                  → is-set Y
+                                  → is-embedding f
+sections-into-sets-are-embeddings f f-is-section Y-is-set =
+ lc-maps-into-sets-are-embeddings f (sections-are-lc f f-is-section) Y-is-set
+
 lc-maps-are-embeddings-with-K : {X : 𝓤 ̇ } {Y : 𝓥 ̇ } (f : X → Y)
                               → left-cancellable f
                               → K-axiom 𝓥
@@ -355,11 +377,11 @@ is-essential f 𝓦 = (Z : 𝓦 ̇) (g : codomain f → Z)
                  → is-embedding (g ∘ f)
                  → is-embedding g
 
-precomp-is-embedding : FunExt
-                     → {X : 𝓤 ̇ } {Y : 𝓥 ̇ } {A : 𝓦 ̇ } (f : X → Y)
-                     → is-embedding f
-                     → is-embedding (λ (φ : A → X) → f ∘ φ)
-precomp-is-embedding {𝓤} {𝓥} {𝓦} fe {X} {Y} {A} f i = γ
+postcomp-is-embedding : FunExt
+                      → {X : 𝓤 ̇ } {Y : 𝓥 ̇ } {A : 𝓦 ̇ } (f : X → Y)
+                      → is-embedding f
+                      → is-embedding (λ (φ : A → X) → f ∘ φ)
+postcomp-is-embedding {𝓤} {𝓥} {𝓦} fe {X} {Y} {A} f i = γ
  where
   g : (φ φ' : A → X) (a : A) → (φ a ＝ φ' a) ≃ (f (φ a) ＝ f (φ' a))
   g φ φ' a = ap f {φ a} {φ' a} , embedding-gives-embedding' f i (φ a) (φ' a)
@@ -598,6 +620,19 @@ while the composite
 
 is an embedding, the evaluation map isn't.
 
+Added by Ian Ray 22nd August 2024
+
+\begin{code}
+
+equiv-embeds-into-function : {X : 𝓤 ̇ } {Y : 𝓥 ̇ }
+                           → FunExt
+                           → (X ≃ Y) ↪ (X → Y)
+equiv-embeds-into-function fe =
+ (⌜_⌝ , pr₁-is-embedding (λ f → being-equiv-is-prop fe f))
+
+\end{code}
+
+End of addition.
 
 Fixities:
 

@@ -4,11 +4,11 @@
    -------------------------------------------------------------
 
    Martin Escardo and collaborators,
-   2010--2023--∞, continuously evolving.
+   2010--2024--∞, continuously evolving.
    https://www.cs.bham.ac.uk/~mhe/
    https://github.com/martinescardo/TypeTopology
 
-   Tested with Agda 2.6.4
+   Tested with Agda 2.6.4.3 and 2.7.0
 
    * Our main use of this development is as a personal blackboard or
      notepad for our research and that of collaborators. In
@@ -55,8 +55,8 @@
 
      (https://www.cs.bham.ac.uk/~mhe/TypeTopology/AllModulesIndex.html)
 
-   * In our last count, on 12th September 2023, this development has
-     626 files and 176k lines of code, including comments and blank
+   * In our last count, on 2024.08.30, this development has 777 Agda
+     files with 223K lines of code, including comments and blank
      lines. But we don't update the count frequently.
 
 Philosophy of the repository
@@ -112,14 +112,21 @@ Philosophy of the repository
      computational sense (as opposed to constructivity in the sense of
      validity in any (∞-)topos).
 
+   * Although our philosophy is based on HoTT/UF and ∞-toposes, it
+     should be emphasized that much of what we do here also holds in
+     the setoid model. In particular, this model validates function
+     extensionality, the existence of propositional truncationsm and
+     the existence of quotients, and some higher inductive types.
+
 Click at the imported module names to navigate to them:
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module index where
 
+import Apartness.index
 import BinarySystems.index
 import CantorSchroederBernstein.index
 import Categories.index
@@ -129,6 +136,7 @@ import ContinuityAxiom.index
 import Coslice.index
 import CrossedModules.index
 import DedekindReals.index
+import DiscreteGraphicMonoids.index
 import DomainTheory.index
 import Dominance.index
 import Duploids.index
@@ -152,13 +160,13 @@ import Modal.index
 import Naturals.index
 import Notation.index
 import NotionsOfDecidability.index
+import OrderedTypes.index
 import Ordinals.index
-import PathSequences.index
 import PCF.index
-import Posets.index
+import PathSequences.index
 import Quotient.index
-import Relations.index
 import Rationals.index
+import Relations.index
 import Slice.index
 import TWA.index
 import Taboos.index
@@ -167,6 +175,7 @@ import UF.index
 import Various.index
 import W.index
 import WildCategories.index
+import gist.index
 
 \end{code}
 

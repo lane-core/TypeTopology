@@ -6,7 +6,7 @@ and that 1/(n+1) converges to 0.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
 open import MLTT.Spartan renaming (_+_ to _∔_)
 
@@ -336,7 +336,7 @@ constant-sequence-converges q (ε , 0<ε) = 0 , γ
   γ = transport (_≤ ⟨1/sn⟩ n+3) VIII VII
 
 ⟨1/sn⟩-bounds-⟨2/3⟩ : (n : ℕ) → (⟨2/3⟩^ n) ≤ ⟨1/sn⟩ n
-⟨1/sn⟩-bounds-⟨2/3⟩ = induction base step
+⟨1/sn⟩-bounds-⟨2/3⟩ = ℕ-induction base step
  where
   base : 1ℚ ≤ 1ℚ
   base = 0 , refl

@@ -2,7 +2,7 @@ Ayberk Tosun, 11 September 2023
 
 \begin{code}[hide]
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
 open import MLTT.Spartan hiding (𝟚)
 open import UF.PropTrunc
@@ -78,12 +78,25 @@ is-clopen₀-is-prop F U (W₁ , p₁ , q₁) (W₂ , p₂ , q₂) = to-subtype-
 
 \end{code}
 
+The definition of the notion of clopen.
+
 \begin{code}
 
 is-clopen : (F : Frame 𝓤 𝓥 𝓦) → ⟨ F ⟩ → Ω 𝓤
 is-clopen F U = is-clopen₀ F U , is-clopen₀-is-prop F U
 
 \end{code}
+
+The type of clopens of a locale `X`.
+
+\begin{code}
+
+𝒞 : Locale 𝓤 𝓥 𝓦 → 𝓤  ̇
+𝒞 X = Σ C ꞉ ⟨ 𝒪 X ⟩ , is-clopen (𝒪 X) C holds
+
+\end{code}
+
+The top element `𝟏` is always a clopen.
 
 \begin{code}
 

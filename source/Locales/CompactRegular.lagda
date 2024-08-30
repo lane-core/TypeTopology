@@ -4,15 +4,15 @@ Based on `ayberkt/formal-topology-in-UF`.
 
 \begin{code}[hide]
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
+open import MLTT.List hiding ([_])
 open import MLTT.Spartan hiding (𝟚)
 open import UF.Base
-open import UF.PropTrunc
 open import UF.FunExt
-open import UF.Univalence
+open import UF.PropTrunc
 open import UF.UA-FunExt
-open import MLTT.List hiding ([_])
+open import UF.Univalence
 
 module Locales.CompactRegular
         (pt : propositional-truncations-exist)
@@ -20,18 +20,20 @@ module Locales.CompactRegular
        where
 
 open import Locales.AdjointFunctorTheoremForFrames
+open import Locales.ContinuousMap.Definition pt fe
+open import Locales.ContinuousMap.FrameHomomorphism-Definition pt fe
+open import Locales.ContinuousMap.FrameHomomorphism-Properties pt fe
 open import Locales.Frame pt fe hiding (is-directed)
+open import Locales.InitialFrame pt fe
 open import Slice.Family
 open import UF.Equiv using (_≃_; logically-equivalent-props-give-is-equiv)
 open import UF.Logic
-open import UF.SubtypeClassifier
 open import UF.Subsingletons
+open import UF.SubtypeClassifier
 
 open AllCombinators pt fe
 open PropositionalTruncation pt
 open import Locales.GaloisConnection pt fe
-
-open import Locales.InitialFrame pt fe
 
 \end{code}
 
@@ -558,6 +560,9 @@ well-inside-is-join-stable F {U₁} {U₂} {V} =
 
 \begin{code}
 
+open FrameHomomorphisms
+open FrameHomomorphismProperties
+
 frame-homomorphisms-preserve-complements : (F G : Frame 𝓤 𝓥 𝓦)
                                          → (h : F ─f→ G)
                                          → {x x′ : ⟨ F ⟩}
@@ -1075,7 +1080,7 @@ clopen-iff-compact-in-stone-frame : (F : Frame 𝓤 𝓥 𝓦)
                                   → is-stone F holds
                                   → (U : ⟨ F ⟩)
                                   → (is-clopen F U holds)
-                                  ⇔ (is-compact-open F U holds)
+                                  ↔ (is-compact-open F U holds)
 clopen-iff-compact-in-stone-frame F (κ , ζ) U = β , γ
  where
   β : (is-clopen F U ⇒ is-compact-open F U) holds
@@ -1304,6 +1309,8 @@ A continuous map `f : X → Y` is called *perfect* if its right adjoint is
 Scott-continuous.
 
 \begin{code}
+
+ open ContinuousMaps
 
  is-perfect-map : (X ─c→ Y) → Ω (𝓤 ⊔ 𝓤' ⊔ 𝓥 ⁺)
  is-perfect-map f = is-scott-continuous (𝒪 X) (𝒪 Y) (pr₁ (right-adjoint-of f))

@@ -6,13 +6,13 @@ Ordinals like in the HoTT book and variations.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Plus-Properties using (+-commutative)
 open import MLTT.Spartan
 open import UF.Base
 open import UF.DiscreteAndSeparated
-open import UF.ExcludedMiddle
+open import UF.ClassicalLogic
 open import UF.FunExt
 open import UF.Hedberg
 open import UF.PropTrunc
@@ -184,6 +184,9 @@ extensional-po-is-prop-valued fe isp x y =
 ≼-refl : {x : X} → x ≼ x
 ≼-refl u l = l
 
+≼-refl-＝ : {x y : X} → x ＝ y → x ≼ y
+≼-refl-＝ refl = ≼-refl
+
 ≼-trans : {x y z : X} → x ≼ y → y ≼ z → x ≼ z
 ≼-trans f g u l = g u (f u l)
 
@@ -191,7 +194,7 @@ is-extensional : 𝓤 ⊔ 𝓥 ̇
 is-extensional = (x y : X) → x ≼ y → y ≼ x → x ＝ y
 
 is-extensional' : 𝓤 ⊔ 𝓥 ̇
-is-extensional' = (x y : X) → ((u : X) → (u < x) ⇔ (u < y)) → x ＝ y
+is-extensional' = (x y : X) → ((u : X) → (u < x) ↔ (u < y)) → x ＝ y
 
 extensional-gives-extensional' : is-extensional → is-extensional'
 extensional-gives-extensional' e x y f = e x y
@@ -771,7 +774,7 @@ decidable-order-from-trichotomy t w τ = γ
     f (inr (inr l)) = inr (λ (m : x < y) → irreflexive x (w x) (t x y x m l))
 
 decidable-order-iff-trichotomy : is-well-order
-                               → is-trichotomous-order ⇔ is-decidable-order
+                               → is-trichotomous-order ↔ is-decidable-order
 decidable-order-iff-trichotomy (_ , w , e , t) =
  decidable-order-from-trichotomy t w ,
  trichotomy-from-decidable-order t e w

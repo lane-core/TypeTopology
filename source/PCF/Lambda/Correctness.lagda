@@ -2,7 +2,7 @@ Brendan Hart 2019-2020
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 open import UF.FunExt
@@ -19,10 +19,10 @@ open PropositionalTruncation pt
 
 open import DomainTheory.Basics.Curry pt fe 𝓤₀
 open import DomainTheory.Basics.Dcpo pt fe 𝓤₀
-open import DomainTheory.Basics.LeastFixedPoint pt fe
+open import DomainTheory.Basics.LeastFixedPoint pt fe 𝓤₀
 open import DomainTheory.Basics.Pointed pt fe 𝓤₀
 open import DomainTheory.Basics.Products pt fe
-open import Lifting.Lifting 𝓤₀
+open import Lifting.Construction 𝓤₀
 open import Lifting.Miscelanea-PropExt-FunExt 𝓤₀ pe fe
 open import Lifting.Monad 𝓤₀ hiding (μ)
 open import Naturals.Properties

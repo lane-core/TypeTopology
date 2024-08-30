@@ -2,7 +2,7 @@ Martin Escardo, Vincent Rahli, Bruno da Rocha Paiva, Ayberk Tosun 20 May 2023
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module EffectfulForcing.Internal.FurtherThoughts where
 
@@ -115,23 +115,23 @@ R⋆-main-lemma-ι : (t : T₀ ι)
                  (α : Baire)
                → R⋆ α ⟦ t ⟧₀ ⌜ t ⌝
 R⋆-main-lemma-ι t α =
- ⟦ t ⟧₀
-  ＝⟨ main-lemma t α ⟨⟩ ⟪⟫ (λ ()) ⟩
- dialogue B⟦ t ⟧₀ α
-  ＝⟨ dialogues-agreement B⟦ t ⟧₀ α ⟩
- dialogue⋆ (church-encode B⟦ t ⟧₀) α
-  ＝⟨ ≡-sym (Rnorm-lemmaι t α _ _ e) ⟩
- dialogue⋆ ⟦ ⌜ t ⌝ ⟧₀ α
-  ∎
+ ⟦ t ⟧₀                              ＝⟨ Ⅰ ⟩
+ dialogue B⟦ t ⟧₀ α                  ＝⟨ Ⅱ ⟩
+ dialogue⋆ (church-encode B⟦ t ⟧₀) α ＝⟨ Ⅲ ⟩
+ dialogue⋆ ⟦ ⌜ t ⌝ ⟧₀ α ∎
  where
   e : (a b : ℕ) → a ＝ b → α a ＝ α b
   e a .a refl = refl
+
+  Ⅰ = main-lemma t α ⟨⟩ ⟪⟫ (λ ())
+  Ⅱ = dialogues-agreement B⟦ t ⟧₀ α
+  Ⅲ = ≡-symm (Rnorm-lemmaι t (e _ _))
 
 {-
 
 -- Is that even provable? (we don't need it, but we want to explore this)
 RnormAs : {σ : type} (d : B〖 σ 〗) (t : {A : type} → T₀ (B-type〖 σ 〗 A)) (α : Baire)
-         → Rnorm d t ⇔ (Σ x ꞉ 〖 σ 〗 , ((R α x d) × (R⋆ α x t)))
+         → Rnorm d t ↔ (Σ x ꞉ 〖 σ 〗 , ((R α x d) × (R⋆ α x t)))
 RnormAs {ι} d t α = c1 , c2
  where
   c0 : is-dialogue-for d t → dialogue d α ＝ dialogue⋆ ⟦ t ⟧₀ α

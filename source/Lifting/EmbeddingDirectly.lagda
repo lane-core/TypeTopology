@@ -6,7 +6,7 @@ structure identity principle.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 
@@ -19,7 +19,7 @@ open import UF.Embeddings
 open import UF.Equiv
 open import UF.FunExt
 
-open import Lifting.Lifting 𝓣
+open import Lifting.Construction 𝓣
 
 \end{code}
 

@@ -2,7 +2,7 @@ Martin Escardo, 19th March 2021.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Fin.Omega where
 
@@ -18,7 +18,7 @@ open import Notation.Order
 open import NotionsOfDecidability.Decidable
 open import UF.Embeddings
 open import UF.Equiv
-open import UF.ExcludedMiddle
+open import UF.ClassicalLogic
 open import UF.FunExt
 open import UF.Subsingletons-FunExt
 open import UF.SubtypeClassifier
@@ -68,7 +68,7 @@ Fin-to-Ω-embedding-is-equiv-iff-2-and-EM : funext 𝓤 𝓤
                                          → propext 𝓤
                                          → (k : ℕ)
                                          → (𝕖 : Fin k ↪ Ω 𝓤)
-                                         → is-equiv ⌊ 𝕖 ⌋ ⇔ ((k ＝ 2) × EM 𝓤)
+                                         → is-equiv ⌊ 𝕖 ⌋ ↔ ((k ＝ 2) × EM 𝓤)
 Fin-to-Ω-embedding-is-equiv-iff-2-and-EM {𝓤} fe pe 0 (e , _) = I , II
  where
   I : is-equiv e → (0 ＝ 2) × EM 𝓤
@@ -121,7 +121,7 @@ Fin-to-Ω-embedding-is-equiv-iff-2-and-EM {𝓤} fe pe 2 (e , e-is-embedding) =
       I₁ = Fin-is-discrete (e⁻¹ p) (e⁻¹ ⊤)
 
       I₂ : is-decidable (e⁻¹ p ＝ e⁻¹ ⊤) → is-decidable (p holds)
-      I₂ = map-is-decidable
+      I₂ = map-decidable
            (λ (r : e⁻¹ p ＝ e⁻¹ ⊤)
                  → equal-⊤-gives-holds p
                     (equivs-are-lc e⁻¹ (inverses-are-equivs e e-is-equiv) r))
@@ -186,7 +186,7 @@ Fin-to-Ω-embedding-is-equiv-iff-2-and-EM {𝓤} fe pe 2 (e , e-is-embedding) =
     η p = η' p (em (p holds) (holds-is-prop p))
                (em (e 𝟎 holds) (holds-is-prop (e 𝟎)))
 
-  γ : is-equiv e ⇔ (2 ＝ 2) × EM 𝓤
+  γ : is-equiv e ↔ (2 ＝ 2) × EM 𝓤
   γ = I , II
 
 Fin-to-Ω-embedding-is-equiv-iff-2-and-EM {𝓤} fe pe (succ (succ (succ k))) 𝕖 =

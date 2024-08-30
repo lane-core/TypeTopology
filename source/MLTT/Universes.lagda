@@ -1,6 +1,6 @@
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module MLTT.Universes where
 
@@ -33,7 +33,7 @@ _⁺⁺ : Universe → Universe
 
 \end{code}
 
-precedences:
+Precedences:
 
 \begin{code}
 

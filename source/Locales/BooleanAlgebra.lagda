@@ -4,7 +4,7 @@ The main result needed in this module is the extension lemma.
 
 \begin{code}[hide]
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
 open import MLTT.Spartan hiding (𝟚)
 open import Slice.Family
@@ -21,14 +21,15 @@ module Locales.BooleanAlgebra
         (fe : Fun-Ext)
        where
 
+open import Locales.CompactRegular pt fe
+open import Locales.ContinuousMap.FrameHomomorphism-Definition pt fe
+open import Locales.ContinuousMap.FrameHomomorphism-Properties pt fe
+open import Locales.Frame pt fe
 open import UF.Logic
 open import UF.Subsingletons
 
+open FrameHomomorphismProperties
 open AllCombinators pt fe
-
-open import Locales.Frame pt fe
-open import Locales.CompactRegular pt fe
-
 open PropositionalTruncation pt
 
 \end{code}
@@ -313,7 +314,7 @@ embedding-preserves-and-reflects-order : (B : BooleanAlgebra 𝓤′ 𝓥′) (L
                                        → (μ : is-ba-embedding B L η holds)
                                        → (x y : ⟪ B ⟫)
                                        → (x ≤[ poset-of-ba B ] y
-                                       ↔ η x ≤[ poset-of L ] η y) holds
+                                       ⇔ η x ≤[ poset-of L ] η y) holds
 embedding-preserves-and-reflects-order B L η μ x y = † , ‡
  where
   η-meet-preserving : (x y : ⟪ B ⟫) → η (x ⋏[ B ] y) ＝ η x ∧[ L ] η y
@@ -380,6 +381,8 @@ contains-compact-opens L B η =
 \end{code}
 
 \begin{code}
+
+open FrameHomomorphisms
 
 extension-lemma : (B : BooleanAlgebra 𝓦 𝓦) (L L′ : Frame 𝓤 𝓦 𝓦)
                 → (η : ⟪ B ⟫ → ⟨ L ⟩)

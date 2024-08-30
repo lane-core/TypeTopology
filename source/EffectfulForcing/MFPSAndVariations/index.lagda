@@ -9,13 +9,14 @@ them in alphabetical order.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module EffectfulForcing.MFPSAndVariations.index where
 
 import EffectfulForcing.MFPSAndVariations.Combinators
 import EffectfulForcing.MFPSAndVariations.CombinatoryT
 import EffectfulForcing.MFPSAndVariations.Continuity
+import EffectfulForcing.MFPSAndVariations.ContinuityProperties        -- added by Ayberk Tosun
 import EffectfulForcing.MFPSAndVariations.Dialogue
 import EffectfulForcing.MFPSAndVariations.MFPS-XXIX                   -- (2012)
 import EffectfulForcing.MFPSAndVariations.SystemT
@@ -23,8 +24,8 @@ import EffectfulForcing.MFPSAndVariations.LambdaCalculusVersionOfMFPS -- (2013)
 import EffectfulForcing.MFPSAndVariations.Church                      -- (2013)
 import EffectfulForcing.MFPSAndVariations.Internal                    -- (2013)
 import EffectfulForcing.MFPSAndVariations.WithoutOracle               -- By Vincent Rahli (2015)
-import EffectfulForcing.MFPSAndVariations.Dialogue-to-Brouwer         -- By Martin Escardo and
-                                                                      --    Paulo Oliva (2017)
+import EffectfulForcing.MFPSAndVariations.Dialogue-to-Brouwer         -- By Martin Escardo
+                                                                      -- and Paulo Oliva (2017)
 
 \end{code}
 

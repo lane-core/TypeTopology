@@ -1,6 +1,6 @@
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
 open import MLTT.Spartan
 open import UF.PropTrunc
@@ -28,7 +28,7 @@ open import DomainTheory.Topology.ScottTopology pt fe 𝓤
 open import DomainTheory.Basics.Pointed pt fe 𝓤
 open import DomainTheory.Lifting.LiftingSet pt fe
 open import DomainTheory.Basics.Miscelanea pt fe 𝓤
-open import Lifting.Lifting 𝓤
+open import Lifting.Construction 𝓤
 open import UF.PropTrunc
 open import UF.SubtypeClassifier
 open import UF.Subsingletons-Properties

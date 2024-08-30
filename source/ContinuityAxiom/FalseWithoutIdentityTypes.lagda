@@ -8,7 +8,7 @@ type we consider, and we name it ≡.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module ContinuityAxiom.FalseWithoutIdentityTypes where
 
@@ -132,7 +132,7 @@ all functions are continuous. Notice that, by definition, 0≡1 is 𝟘.
 \begin{code}
 
 continuous : (Baire → ℕ) → 𝓤₀ ̇
-continuous f = ∀ α → Σ \n → ∀ β → α ≡[ n ] β → f α ≡ f β
+continuous f = ∀ α → Σ n ꞉ ℕ , (∀ β → α ≡[ n ] β → f α ≡ f β)
 
 theorem : (∀(f : Baire → ℕ) → continuous f) → 0 ≡ 1
 theorem continuity = zero-is-one

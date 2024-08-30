@@ -2,11 +2,11 @@ Martin Escardo
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Slice.index where
 
-import Slice.Slice
+import Slice.Construction
 import Slice.Algebras
 import Slice.Embedding
 import Slice.IdentityViaSIP

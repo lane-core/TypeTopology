@@ -22,7 +22,7 @@ https://github.com/BrendanHart/Investigating-Properties-of-PCF/blob/master/Inves
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
 open import MLTT.Spartan
 open import UF.PropTrunc
@@ -43,7 +43,7 @@ open import UF.DiscreteAndSeparated
 open import PCF.Combinatory.PCF pt
 open import DomainTheory.Basics.Dcpo pt fe 𝓤₀
 open import DomainTheory.Basics.Exponential pt fe 𝓤₀
-open import DomainTheory.Basics.LeastFixedPoint pt fe
+open import DomainTheory.Basics.LeastFixedPoint pt fe 𝓤₀
 open import DomainTheory.Basics.Miscelanea pt fe 𝓤₀
 open import DomainTheory.Basics.Pointed pt fe 𝓤₀
 
@@ -52,7 +52,7 @@ open IfZeroDenotationalSemantics pe
 
 open import DomainTheory.Lifting.LiftingSet pt fe 𝓤₀ pe
 
-open import Lifting.Lifting 𝓤₀
+open import Lifting.Construction 𝓤₀
 open import Lifting.Monad 𝓤₀ hiding (μ)
 
 ⟦_⟧ : type → DCPO⊥ {𝓤₁} {𝓤₁}

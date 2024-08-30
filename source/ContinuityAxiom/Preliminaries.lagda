@@ -2,7 +2,7 @@ Chuangjie Xu, 2015
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K #-} -- --exact-split
+{-# OPTIONS --safe --without-K --no-exact-split #-} --
 
 module ContinuityAxiom.Preliminaries where
 
@@ -84,7 +84,7 @@ CoV-induction {P} step n = step n (claim n)
   qstep n qn m (≤-succ r) = step m (λ k u → qn k (≤-trans u r))
 
   claim : ∀ n → Q n
-  claim = induction qbase qstep
+  claim = ℕ-induction qbase qstep
 
 \end{code}
 

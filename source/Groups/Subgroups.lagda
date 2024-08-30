@@ -14,7 +14,7 @@ that the group axioms, as defined in Groups, form a proposition.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 open import UF.Base hiding (_≈_)
@@ -57,10 +57,10 @@ module _ (G : Group 𝓤) where
                  × ((x y : ⟨ G ⟩) → 𝓐 x → 𝓐 y → 𝓐 (x · y))
                  × ((x : ⟨ G ⟩) → 𝓐 x → 𝓐 (inv G x))
 
-  Subgroups : 𝓤 ⁺ ̇
-  Subgroups = Σ A ꞉ 𝓟 ⟨ G ⟩ , group-closed (_∈ A)
+  Subgroup : 𝓤 ⁺ ̇
+  Subgroup = Σ A ꞉ 𝓟 ⟨ G ⟩ , group-closed (_∈ A)
 
-  ⟪_⟫ : Subgroups → 𝓟 ⟨ G ⟩
+  ⟪_⟫ : Subgroup → 𝓟 ⟨ G ⟩
   ⟪ A , u , c , ι ⟫ = A
 
   being-group-closed-subset-is-prop : (A : 𝓟 ⟨ G ⟩)
@@ -80,27 +80,27 @@ module _ (G : Group 𝓤) where
   ⟪⟫-is-embedding : is-embedding ⟪_⟫
   ⟪⟫-is-embedding = pr₁-is-embedding being-group-closed-subset-is-prop
 
-  ap-⟪⟫ : (S T : Subgroups) → S ＝ T → ⟪ S ⟫ ＝ ⟪ T ⟫
+  ap-⟪⟫ : (S T : Subgroup) → S ＝ T → ⟪ S ⟫ ＝ ⟪ T ⟫
   ap-⟪⟫ S T = ap ⟪_⟫
 
-  ap-⟪⟫-is-equiv : (S T : Subgroups) → is-equiv (ap-⟪⟫ S T)
+  ap-⟪⟫-is-equiv : (S T : Subgroup) → is-equiv (ap-⟪⟫ S T)
   ap-⟪⟫-is-equiv = embedding-gives-embedding' ⟪_⟫ ⟪⟫-is-embedding
 
-  subgroups-form-a-set : is-set Subgroups
+  subgroups-form-a-set : is-set Subgroup
   subgroups-form-a-set {S} {T} = equiv-to-prop
                                   (ap-⟪⟫ S T , ap-⟪⟫-is-equiv S T)
                                   (𝓟-is-set ua)
 
-  subgroup-equality : (S T : Subgroups)
+  subgroup-equality : (S T : Subgroup)
                     → (S ＝ T)
-                    ≃ ((x : ⟨ G ⟩) → (x ∈ ⟪ S ⟫) ⇔ (x ∈ ⟪ T ⟫))
+                    ≃ ((x : ⟨ G ⟩) → (x ∈ ⟪ S ⟫) ↔ (x ∈ ⟪ T ⟫))
 
   subgroup-equality S T = γ
    where
-    f : S ＝ T → (x : ⟨ G ⟩) → x ∈ ⟪ S ⟫ ⇔ x ∈ ⟪ T ⟫
+    f : S ＝ T → (x : ⟨ G ⟩) → x ∈ ⟪ S ⟫ ↔ x ∈ ⟪ T ⟫
     f p x = transport (λ - → x ∈ ⟪ - ⟫) p , transport (λ - → x ∈ ⟪ - ⟫) (p ⁻¹)
 
-    h : ((x : ⟨ G ⟩) → x ∈ ⟪ S ⟫ ⇔ x ∈ ⟪ T ⟫) → ⟪ S ⟫ ＝ ⟪ T ⟫
+    h : ((x : ⟨ G ⟩) → x ∈ ⟪ S ⟫ ↔ x ∈ ⟪ T ⟫) → ⟪ S ⟫ ＝ ⟪ T ⟫
     h φ = subset-extensionality' ua α β
      where
       α : ⟪ S ⟫ ⊆ ⟪ T ⟫
@@ -109,10 +109,10 @@ module _ (G : Group 𝓤) where
       β : ⟪ T ⟫ ⊆ ⟪ S ⟫
       β x = rl-implication (φ x)
 
-    g : ((x : ⟨ G ⟩) → x ∈ ⟪ S ⟫ ⇔ x ∈ ⟪ T ⟫) → S ＝ T
+    g : ((x : ⟨ G ⟩) → x ∈ ⟪ S ⟫ ↔ x ∈ ⟪ T ⟫) → S ＝ T
     g = inverse (ap-⟪⟫ S T) (ap-⟪⟫-is-equiv S T) ∘ h
 
-    γ : (S ＝ T) ≃ ((x : ⟨ G ⟩) → x ∈ ⟪ S ⟫ ⇔ x ∈ ⟪ T ⟫)
+    γ : (S ＝ T) ≃ ((x : ⟨ G ⟩) → x ∈ ⟪ S ⟫ ↔ x ∈ ⟪ T ⟫)
     γ = logically-equivalent-props-are-equivalent
          subgroups-form-a-set
          (Π-is-prop fe
@@ -258,15 +258,15 @@ module _ (G : Group 𝓤) where
                                homomorphic-structure-gives-group-closed-fiber
 
 
-  characterization-of-the-type-of-subgroups : Subgroups ≃ (Σ H ꞉ Group 𝓤
+  characterization-of-the-type-of-subgroups : Subgroup ≃ (Σ H ꞉ Group 𝓤
                                                          , Σ h ꞉ (⟨ H ⟩ → ⟨ G ⟩)
                                                          , is-embedding h
                                                          × is-hom H G h)
   characterization-of-the-type-of-subgroups =
 
-   Subgroups                                                                           ≃⟨ i ⟩
+   Subgroup                                                                           ≃⟨ i ⟩
    (Σ A ꞉ 𝓟 ⟨ G ⟩ , group-closed (_∈ A))                                                ≃⟨ ii ⟩
-   (Σ (X , h , e) ꞉ Subtypes ⟨ G ⟩ , group-closed (fiber h))                             ≃⟨ iii ⟩
+   (Σ (X , h , e) ꞉ Subtype ⟨ G ⟩ , group-closed (fiber h))                              ≃⟨ iii ⟩
    (Σ X ꞉ 𝓤 ̇ , Σ (h , e) ꞉ X ↪ ⟨ G ⟩ , group-closed (fiber h))                          ≃⟨ iv ⟩
    (Σ X ꞉ 𝓤 ̇ , Σ (h , e) ꞉ X ↪ ⟨ G ⟩ , Σ τ ꞉ T X , is-hom (X , τ) G h)                   ≃⟨ v ⟩
    (Σ X ꞉ 𝓤 ̇ , Σ h ꞉ (X → ⟨ G ⟩) , Σ e ꞉ is-embedding h , Σ τ ꞉ T X , is-hom (X , τ) G h) ≃⟨ vi ⟩
@@ -277,13 +277,13 @@ module _ (G : Group 𝓤) where
       where
        open special-classifier-single-universe 𝓤
 
-       φ : Subtypes ⟨ G ⟩ → 𝓟 ⟨ G ⟩
+       φ : Subtype ⟨ G ⟩ → 𝓟 ⟨ G ⟩
        φ = χ-special is-prop ⟨ G ⟩
 
        j : is-equiv φ
        j = χ-special-is-equiv (ua 𝓤) fe is-prop ⟨ G ⟩
 
-       i    = ≃-refl Subgroups
+       i    = ≃-refl Subgroup
        ii   = ≃-sym (Σ-change-of-variable (λ (A : 𝓟 ⟨ G ⟩) → group-closed (_∈ A)) φ j)
        iii  = Σ-assoc
        iv   = Σ-cong (λ X → Σ-cong (λ (h , e) → fiber-structure-lemma h e fe))
@@ -293,7 +293,7 @@ module _ (G : Group 𝓤) where
        viii = ≃-sym Σ-assoc
 
 
-  induced-group : Subgroups → Group 𝓤
+  induced-group : Subgroup → Group 𝓤
   induced-group S = pr₁ (⌜ characterization-of-the-type-of-subgroups ⌝ S)
 
 \end{code}

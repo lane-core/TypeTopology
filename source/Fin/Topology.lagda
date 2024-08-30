@@ -7,7 +7,7 @@ using the corresponding properties for (finite) types.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Fin.Topology where
 
@@ -22,7 +22,7 @@ open import TypeTopology.CompactTypes
 open import UF.DiscreteAndSeparated
 open import UF.Equiv
 open import UF.EquivalenceExamples
-open import UF.ExcludedMiddle
+open import UF.ClassicalLogic
 open import UF.FunExt
 open import UF.PropTrunc
 open import UF.Sets

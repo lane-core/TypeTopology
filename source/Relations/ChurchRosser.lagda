@@ -6,12 +6,12 @@ without higher-inductive types other than propositional truncation.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 
 module Relations.ChurchRosser
-         {𝓤 𝓥 : Universe}
+         {𝓤 : Universe}
          {X : 𝓤 ̇ }
          (_▷_ : X → X → 𝓤 ̇ )
        where

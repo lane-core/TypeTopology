@@ -8,12 +8,14 @@ following the following papers:
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Modal.index where
 
+import Modal.Open
 import Modal.Subuniverse
 import Modal.ReflectiveSubuniverse
+import Modal.SigmaClosedReflectiveSubuniverse
 import Modal.Homotopy
 
 \end{code}

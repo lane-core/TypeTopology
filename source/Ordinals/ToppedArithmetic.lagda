@@ -17,7 +17,7 @@ cumbersome and (2) requires much work in other modules.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import UF.FunExt
 
@@ -28,7 +28,7 @@ module Ordinals.ToppedArithmetic
 open import UF.Subsingletons
 
 open import MLTT.Spartan
-open import CoNaturals.GenericConvergentSequence
+open import CoNaturals.Type
 open import TypeTopology.SquashedSum fe
 open import Notation.CanonicalMap
 

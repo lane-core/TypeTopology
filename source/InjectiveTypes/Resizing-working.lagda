@@ -20,7 +20,7 @@ consider their truncations, which are also constructive taboos.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
 open import UF.Univalence
 open import UF.PropTrunc
@@ -35,7 +35,7 @@ open PropositionalTruncation pt
 open import MLTT.Spartan
 open import Taboos.Decomposability ua
 open import UF.Embeddings
-open import UF.ExcludedMiddle
+open import UF.ClassicalLogic
 open import UF.FunExt
 open import UF.Miscelanea
 open import UF.Retracts

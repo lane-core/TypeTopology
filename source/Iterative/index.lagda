@@ -14,7 +14,7 @@ Notice also that the files here also include comments.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module Iterative.index where
 
@@ -22,8 +22,10 @@ import Iterative.Multisets
 import Iterative.Sets
 import Iterative.Ordinals
 import Iterative.Multisets-Addendum
+import Iterative.Multisets-HFLO
 import Iterative.Sets-Addendum
 import Iterative.Ordinals-Addendum
+import Iterative.Finite -- by Alice Laroche
 
 \end{code}
 

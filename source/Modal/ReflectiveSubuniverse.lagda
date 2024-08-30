@@ -4,7 +4,7 @@ Much of this file is based on the proofs from Egbert Rijke's PhD thesis.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 open import MLTT.Spartan
 open import UF.Subsingletons
@@ -15,7 +15,7 @@ open import UF.Retracts
 open import UF.Embeddings
 open import UF.EquivalenceExamples
 import UF.PairFun as PairFun
-import Slice.Slice as Slice
+import Slice.Construction as Slice
 
 open import Modal.Subuniverse
 open import Modal.Homotopy

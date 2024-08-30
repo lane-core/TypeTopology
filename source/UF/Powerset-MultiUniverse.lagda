@@ -18,25 +18,22 @@ module UF.Powerset specializes this module to the case 𝓤=𝓥.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split #-}
+{-# OPTIONS --safe --without-K #-}
 
 module UF.Powerset-MultiUniverse where
 
 open import MLTT.Spartan
-open import UF.Equiv
-open import UF.Equiv-FunExt
 open import UF.FunExt
 open import UF.Lower-FunExt
 open import UF.PropTrunc
-open import UF.Subsingletons
-open import UF.Subsingletons-FunExt
-open import UF.UA-FunExt
-open import UF.Univalence
-open import UF.SubtypeClassifier
-open import UF.SubtypeClassifier-Properties
 open import UF.Sets
 open import UF.Sets-Properties
-open import UF.Hedberg
+open import UF.Subsingletons
+open import UF.Subsingletons-FunExt
+open import UF.SubtypeClassifier
+open import UF.SubtypeClassifier-Properties
+open import UF.UA-FunExt
+open import UF.Univalence
 
 𝓟 : {𝓥 𝓤 : Universe} → 𝓤 ̇ → 𝓤 ⊔ (𝓥 ⁺) ̇
 𝓟 {𝓥} {𝓤} X = X → Ω 𝓥
@@ -76,14 +73,14 @@ syntax comprehension X (λ x → A) = ⁅ x ꞉ X ∣ A ⁆
 full : {X : 𝓤 ̇ } →  𝓟 {𝓥} X
 full _ = 𝟙 , 𝟙-is-prop
 
+_∈ₚ_ : {X : 𝓤  ̇} → X → (X → Ω 𝓥) → Ω 𝓥
+x ∈ₚ A = A x
+
 _∈_ : {X : 𝓤 ̇ } → X → 𝓟 {𝓥} X → 𝓥 ̇
-x ∈ A = A x holds
+x ∈ A =  x ∈ₚ A holds
 
 _∉_ : {X : 𝓤 ̇ } → X → 𝓟 {𝓥} X → 𝓥 ̇
 x ∉ A = ¬ (x ∈ A)
-
-infix  40 _∈_
-infix  40 _∉_
 
 is-empty-subset : {X : 𝓤 ̇ } → 𝓟 {𝓥} X → 𝓤 ⊔ 𝓥 ̇
 is-empty-subset {𝓤} {𝓥} {X} A = (x : X) → x ∉ A
@@ -158,7 +155,7 @@ module inhabited-subsets (pt : propositional-truncations-exist) where
  infix  40 _∈⁺_
  infix  40 _∉⁺_
 
- open import UF.ExcludedMiddle
+ open import UF.ClassicalLogic
 
  non-empty-subsets-are-inhabited : Excluded-Middle
                                  → {X : 𝓤 ̇ } (B : 𝓟 {𝓥} X)
@@ -166,10 +163,10 @@ module inhabited-subsets (pt : propositional-truncations-exist) where
                                  → is-inhabited B
  non-empty-subsets-are-inhabited em B = not-Π-not-implies-∃ pt em
 
- non-inhabited-subsets-are-empty : {X : 𝓤 ̇ } (B : 𝓟 {𝓥} X)
-                                 → ¬ is-inhabited B
-                                 → is-empty-subset B
- non-inhabited-subsets-are-empty B ν x m = ν ∣ x , m ∣
+ uninhabited-subsets-are-empty : {X : 𝓤 ̇ } (B : 𝓟 {𝓥} X)
+                               → ¬ is-inhabited B
+                               → is-empty-subset B
+ uninhabited-subsets-are-empty B ν x m = ν ∣ x , m ∣
 
 complement :  {X : 𝓤 ̇ } → funext 𝓤 𝓤₀ → 𝓟 X → 𝓟 X
 complement fe A = λ x → (x ∉ A) , (∉-is-prop fe A x)
@@ -184,6 +181,12 @@ complement fe A = λ x → (x ∉ A) , (∉-is-prop fe A x)
 ⊆-is-prop : funext 𝓤 𝓤
           → {X : 𝓤 ̇ } (A B : 𝓟 X) → is-prop (A ⊆ B)
 ⊆-is-prop fe = ⊆-is-prop' fe fe
+
+module PropositionalSubsetInclusionNotation (fe : Fun-Ext) where
+
+ _⊆ₚ_ _⊇ₚ_ : {X : 𝓤  ̇} → 𝓟 {𝓤} X → 𝓟 {𝓤} X → Ω 𝓤
+ A ⊆ₚ B = (A ⊆ B) , ⊆-is-prop fe A B
+ A ⊇ₚ B = (A ⊇ B) , ⊆-is-prop fe B A
 
 ∅-is-least' : {X : 𝓤 ̇ } (A : 𝓟 {𝓥} X) → ∅ {𝓤} {𝓥} ⊆ A
 ∅-is-least' _ x = 𝟘-induction
@@ -276,7 +279,7 @@ module singleton-subsets
  ∈-❴❵ : {x : X} → x ∈ ❴ x ❵
  ∈-❴❵ {x} = refl
 
- ❴❵-subset-characterization : {x : X} (A : 𝓟 {𝓥} X) → x ∈ A ⇔ ❴ x ❵ ⊆ A
+ ❴❵-subset-characterization : {x : X} (A : 𝓟 {𝓥} X) → x ∈ A ↔ ❴ x ❵ ⊆ A
  ❴❵-subset-characterization {𝓥} {x} A = ⦅⇒⦆ , ⦅⇐⦆
   where
    ⦅⇒⦆ : x ∈ A → ❴ x ❵ ⊆ A
@@ -450,5 +453,15 @@ module unions-of-small-families
    where
     γ : (Σ i ꞉ I , x ∈ α i) → x ∈ A
     γ (i , a) = ub i x a
+
+\end{code}
+
+Fixities.
+
+\begin{code}
+
+infix  40 _∈ₚ_
+infix  40 _∈_
+infix  40 _∉_
 
 \end{code}

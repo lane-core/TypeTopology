@@ -6,7 +6,7 @@ equivalent to LPO.
 
 \begin{code}
 
-{-# OPTIONS --safe --without-K --exact-split --lossy-unification #-}
+{-# OPTIONS --safe --without-K --lossy-unification #-}
 
 open import UF.Univalence
 open import UF.FunExt
@@ -30,7 +30,7 @@ open import Ordinals.OrdinalOfOrdinals ua
 open import Ordinals.Type
 open import Ordinals.Equivalence
 open import Ordinals.Underlying
-open import CoNaturals.GenericConvergentSequence
+open import CoNaturals.Type
 open import UF.Equiv
 
 ω+𝟙-is-⊴-ℕ∞ : (ω +ₒ 𝟙ₒ) ⊴ ℕ∞ₒ
